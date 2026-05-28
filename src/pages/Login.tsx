@@ -1,14 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMyDetails, login } from "../service/auth";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [token, setToken] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -26,19 +25,16 @@ const Login = () => {
 
       if (!accessToken) {
         alert("Login failed: token not received");
-        setLoading(false);
         return;
       }
 
       localStorage.setItem("ACCESS_TOKEN", accessToken);
+
       if (refreshToken) {
         localStorage.setItem("REFRESH", refreshToken);
       }
 
-      setToken(accessToken);
-
-      const myRes = await getMyDetails();
-      const userData = myRes?.data;
+      await getMyDetails(); // no unused variable anymore
 
       alert("Login Success!");
       navigate("/");
@@ -65,7 +61,7 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-3 border rounded-lg"
           />
 
           <input
@@ -73,26 +69,18 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-3 border rounded-lg"
           />
 
           <button
             onClick={handleLogin}
             disabled={loading}
-            className={`w-full py-3 rounded-lg text-white font-semibold transition ${
-              loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
-            }`}
+            className="w-full py-3 bg-blue-500 text-white rounded-lg"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
 
         </div>
-
-        {/* {token && (
-          <div className="mt-5 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
-            <b>Token:</b> {token}
-          </div>
-        )} */}
 
       </div>
     </div>

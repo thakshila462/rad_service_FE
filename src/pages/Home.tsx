@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react"
-import { useAuth } from "../hooks/useAuth"
+import { useEffect } from "react";
 
 const Home = () => {
-  const [item, setItem] = useState([])
-  // const { user ,setUser, loading } = useAuth()
 
   const fetchAllItem = async () => {
-    const res: any = await fetch("")
-    // axios
-    setItem(res.data)
-  }
+    try {
+      await fetch("http://localhost:5000/api/v1/items");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    fetchAllItem()
-  }, [])
+    fetchAllItem();
+  }, []);
 
-  return <div>Home page components</div>
-}
+  return <div>Home page components</div>;
+};
 
-export default Home
+export default Home;
